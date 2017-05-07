@@ -1,0 +1,33 @@
+{
+	"name": "Instasham",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"axios": "^0.16.1",
+		"buffer": "^5.0.6",
+		"react": "16.0.0-alpha.6",
+		"react-native": "0.44.0",
+		"react-native-fbsdk": "^0.5.0",
+		"react-native-image-crop-picker": "^0.13.0",
+		"react-native-vector-icons": "^4.1.0",
+		"react-redux": "^5.0.4",
+		"react-router-native": "^4.1.1",
+		"redux": "^3.6.0",
+		"redux-thunk": "^2.2.0"
+	},
+	"devDependencies": {
+		"babel-jest": "19.0.0",
+		"babel-preset-react-native": "1.9.1",
+		"eslint": "^3.19.0",
+		"eslint-plugin-react": "^6.10.3",
+		"jest": "19.0.2",
+		"react-test-renderer": "16.0.0-alpha.6"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
