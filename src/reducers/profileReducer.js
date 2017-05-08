@@ -47,12 +47,9 @@ export function login(){
 					AsyncStorage.setItem('token', response.accessToken)
 					axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${response.accessToken}`)
 					.then(response => {
-						// Find or create user in our DB
-						axios.post('http://52.10.128.151:3005/api/users', {profile: response.data}).then(response=>{
-							dispatch({
-								type: SETPROFILE,
-								profile: response.data
-							})
+						dispatch({
+							type: SETPROFILE,
+							profile: response.data
 						})
 					})
 				})
@@ -81,13 +78,9 @@ export function checkToken(){
 				// Use token to get facebook profile
 				axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${token}`)
 				.then(response => {
-					// Find or create user in our DB
-					axios.post('http://52.10.128.151:3005/api/users', {profile: response.data})
-					.then(response => {
-						dispatch({
-							type: SETPROFILE,
-							profile: response.data
-						})
+					dispatch({
+						type: SETPROFILE,
+						profile: response.data
 					})
 				})
 			}	else {
