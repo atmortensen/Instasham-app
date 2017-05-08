@@ -1,5 +1,12 @@
 import React, {Component} from 'react'
-import {Text, StyleSheet, Image, Dimensions, ScrollView} from 'react-native'
+import {
+	Text, 
+	StyleSheet, 
+	Image, 
+	Dimensions, 
+	ScrollView,
+	TouchableHighlight
+} from 'react-native'
 import {connect} from 'react-redux'
 import Nav from '../Nav'
 import axios from 'axios'
@@ -13,9 +20,10 @@ class Home extends Component{
 		this.state = {
 			urls: []
 		}
+		this.loadImages = this.loadImages.bind(this)
 	}
 
-	componentDidMount(){	
+	loadImages(){
 		axios({
 			method: 'get',
 			url: 'https://guarded-inlet-23236.herokuapp.com/getUrls',
@@ -25,20 +33,39 @@ class Home extends Component{
 		})
 	}
 
+	deleteImage(url){
+		axios({
+			method: 'delete',
+			url: 'https://guarded-inlet-23236.herokuapp.com/removeUrl/?url=' + url,
+			headers: {'Authorization': this.props.token}
+		}).then(() => {
+			this.loadImages()
+		})
+	}
+
+	componentDidMount(){	
+		this.loadImages()
+	}
+
 	render(){
 		return(
 			<Nav>
 				<ScrollView>
 					<Text>Home Route</Text>
 					
-					{this.state.urls.map( url => {
-						return <Image 
-							key={url.id} 
-							source={{uri: url.url}} 
-							style={{
-								width: viewWidth, 
-								height: viewWidth
-							}} />
+					{this.state.urls.map( image => {
+						return (
+							<TouchableHighlight 
+								key={image.id} 
+								onPress={this.deleteImage.bind(this, image.url)}>
+								<Image 
+								source={{uri: image.url}} 
+								style={{
+									width: viewWidth, 
+									height: viewWidth
+								}} />
+							</TouchableHighlight>
+						)
 					})}
 				</ScrollView>
 			</Nav>
