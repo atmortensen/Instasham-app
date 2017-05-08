@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, StyleSheet} from 'react-native'
+import {View, StyleSheet, BackHandler, Alert} from 'react-native'
 import {NativeRouter, Route} from  'react-router-native'
 import {Provider} from 'react-redux'
 import store from './store'
@@ -12,6 +12,17 @@ import Chat from './components/Chat-view/Chat-view'
 import Camera from './components/Camera-view/Camera-view'							
 
 export default class App extends Component {
+
+	componentDidMount(){
+		BackHandler.addEventListener('hardwareBackPress', () => {
+			Alert.alert('Do you want to close Instasham?', null, [
+				{text: 'Yes', onPress: () => BackHandler.exitApp()}, 
+				{text: 'No'}
+			])
+			return true
+		})
+	}
+
 	render() {
 		return (
 			<Provider store={store}>

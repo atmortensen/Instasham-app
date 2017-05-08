@@ -16,17 +16,17 @@ export default class Nav extends Component{
 		return(
 			<View style={styles.container}>
 				<View style={[styles.navBar, styles.top]}>
-					<Link to='/Search'><Icon name='search' size={32} color='#262626'/></Link>
-					<Link to='/Home'><Image source={require('../images/logo_360.png')} /></Link>
-					<Link to='/Chat'><Icon name='send' size={32} color='#262626'/></Link>
+					<Link underlayColor="transparent" to='/Search'><Icon name='search' style={styles.icon} /></Link>
+					<Link underlayColor="transparent" to='/Home'><Image source={require('../images/logo_360.png')} /></Link>
+					<Link underlayColor="transparent" to='/Chat'><Icon name='send' style={styles.icon} /></Link>
 				</View>
 				<View style={styles.container}>
 					{this.props.children}
 				</View>
 				<View style={styles.navBar}>
-          <Link to='/Home'><Icon name='home' size={32} color='#262626' /></Link>
-          <Link to='/Camera'><Icon name='camera-alt' size={32} color='#262626' /></Link>
-          <Link to='/Profile'><Icon name='person' size={32} color='#262626' /></Link>
+          <Link underlayColor="transparent" to='/Home'><Icon name='home' style={styles.icon} /></Link>
+          <Link underlayColor="transparent" to='/Camera'><Icon name='camera-alt' style={styles.icon} /></Link>
+          <Link underlayColor="transparent" to='/Profile'><Icon name='person' style={styles.icon} /></Link>
 	      </View>
 			</View>
 		)
@@ -45,17 +45,15 @@ const styles = StyleSheet.create({
 		paddingRight: 15,
 		paddingLeft: 15
 	},
-	top: {
-		// paddingTop: 35
+	icon: {
+		color: '#262626',
+		fontSize: 32
+	},
+	active: {
+		color: '#999999'
 	},
 	container: {
 		flex: 1
-	},
-	btnSelected: {
-		color:'grey'
-	},
-	notSelected : {
-		color:'#262626'
 	}
 })
 
