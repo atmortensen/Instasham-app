@@ -46,7 +46,7 @@ export function login(){
 						token: response.accessToken
 					})
 					AsyncStorage.setItem('token', response.accessToken)
-					axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${response.accessToken}`)
+					axios.get(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${response.accessToken}`)
 					.then(response => {
 						myAxios().post('/login', response.data).then((response) => {
 							dispatch({
@@ -79,7 +79,7 @@ export function checkToken(){
 					token
 				})
 				// Use token to get facebook profile
-				axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${token}`)
+				axios.get(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${token}`)
 				.then(response => {
 					myAxios().post('/login', response.data).then((response) => {
 						dispatch({
