@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Text, StyleSheet, AsyncStorage, Image} from 'react-native'
 import {connect} from 'react-redux'
 import Nav from '../Nav'
-import {logout} from '../../reducers/profileReducer'
+import {logout} from '../../ducks/profiles-duck'
 
 class Profile extends Component{
 
@@ -26,14 +26,14 @@ class Profile extends Component{
 
 const styles = StyleSheet.create({
 	profile: {
-		height: 50,
-		width: 50,
+		height: 75,
+		width: 75,
 		borderRadius: 50
 	}
 })
 
 export default connect( state=>({ 
-	profile: state.profileReducer.profile,
+	profile: state.profilesDuck.profile,
 	redux: state
 }), {
 	logout

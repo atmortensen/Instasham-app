@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 })
 
 export default connect( state => ({ 
-	token: state.profileReducer.token
+	token: state.profilesDuck.token
 }), {
 	// Imported Actions
 })(Home)

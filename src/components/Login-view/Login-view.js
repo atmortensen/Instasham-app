@@ -6,7 +6,7 @@ import {
 	Button
 } from 'react-native'
 import {connect} from 'react-redux'
-import {login, checkToken} from '../../reducers/profileReducer'
+import {login, checkToken} from '../../ducks/profiles-duck'
 
 class Login extends Component{
 
@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
 })
 
 export default connect(state => ({ 
-	profile: state.profileReducer.profile,
-	loading: state.profileReducer.loading
+	profile: state.profilesDuck.profile,
+	loading: state.profilesDuck.loading
 }), {
 	login, checkToken
 })(Login)

@@ -3,10 +3,10 @@ import {LoginManager, AccessToken} from 'react-native-fbsdk'
 import {Alert, AsyncStorage} from 'react-native'
 import myAxios from '../my-axios'
 
-const SETPROFILE = 'login/SETPROFILE'
-const SETTOKEN = 'login/SETTOKEN'
+const SET_PROFILE = 'login/SET_PROFILE'
+const SET_TOKEN = 'login/SET_TOKEN'
 const LOADING = 'login/LOADING'
-const DONE_LOADING = 'login/DONE_LOADING'
+const INVALID_TOKEN = 'login/INVALID_TOKEN'
 const LOGOUT = 'login/LOGOUT'
 
 const initialState = {
@@ -17,15 +17,17 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type){
-		case SETPROFILE:
+		case SET_PROFILE:
 			return Object.assign({}, state, {profile: action.profile, loading: false})
-		case SETTOKEN:
+		case SET_TOKEN:
 			return Object.assign({}, state, {token: action.token})
 		case LOGOUT:
+			AsyncStorage.removeItem('token')
 			return Object.assign({}, state, {profile: null, token: ''})
 		case LOADING:
 			return Object.assign({}, state, {loading: true})
-		case DONE_LOADING:
+		case INVALID_TOKEN:
+			AsyncStorage.removeItem('token')
 			return Object.assign({}, state, {loading: false})
 		default:
 			return state
@@ -42,20 +44,21 @@ export function login(){
 				AccessToken.getCurrentAccessToken().then(response => {
 					// Save token and use it to get facebook profile
 					dispatch({
-						type: SETTOKEN,
+						type: SET_TOKEN,
 						token: response.accessToken
 					})
 					AsyncStorage.setItem('token', response.accessToken)
 					axios.get(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${response.accessToken}`)
 					.then(response => {
-						myAxios().post('/login', response.data).then((response) => {
+						// Find or create user in db
+						myAxios().post('/profiles/login', response.data).then((response) => {
 							dispatch({
-								type: SETPROFILE,
+								type: SET_PROFILE,
 								profile: response.data
 							})
-						})
-					})
-				})
+						}).catch(()=>dispatch({type: INVALID_TOKEN}))
+					}).catch(()=>dispatch({type: INVALID_TOKEN}))
+				}).catch(()=>dispatch({type: INVALID_TOKEN}))
 			} else {
 				Alert.alert('Login unsuccessful!')
 			}
@@ -75,21 +78,22 @@ export function checkToken(){
 		AsyncStorage.getItem('token').then(token => {
 			if(token){
 				dispatch({
-					type: SETTOKEN,
+					type: SET_TOKEN,
 					token
 				})
 				// Use token to get facebook profile
 				axios.get(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${token}`)
 				.then(response => {
-					myAxios().post('/login', response.data).then((response) => {
+					// Find or create user in db
+					myAxios().post('/profiles/login', response.data).then((response) => {
 						dispatch({
-							type: SETPROFILE,
+							type: SET_PROFILE,
 							profile: response.data
 						})
-					})
-				}).catch(()=>dispatch({type: DONE_LOADING}))
+					}).catch(()=>dispatch({type: INVALID_TOKEN}))
+				}).catch(()=>dispatch({type: INVALID_TOKEN}))
 			}	else {
-				dispatch({type: DONE_LOADING})
+				dispatch({type: INVALID_TOKEN})
 			}
 		})
 	}

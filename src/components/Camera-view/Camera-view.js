@@ -21,7 +21,7 @@ class Camera extends Component{
 		this.setState({loading: 'LOADING'})
 		const buf = new Buffer(image.data, 'base64')
 		const fileName = this.props.profile.id + '_' + Date.now() + '.jpeg'
-		myAxios(this.props.token).get('/sign-s3?file-name=' + fileName)
+		myAxios(this.props.token).get('/images/sign-s3?file-name=' + fileName)
 		.then((response) => {
       axios({
         method: 'put',
@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
 })
 
 export default connect( state=>({ 
-	profile: state.profileReducer.profile,
-	token: state.profileReducer.token
+	profile: state.profilesDuck.profile,
+	token: state.profilesDuck.token
 }), {
 	// Imported Actions
 })(Camera)

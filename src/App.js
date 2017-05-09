@@ -9,7 +9,9 @@ import Login from './components/Login-view/Login-view'
 import Profile from './components/Profile-view/Profile-view'
 import Search from './components/Search-view/Search-view'
 import Chat from './components/Chat-view/Chat-view'
+import NewChat from './components/Chat-view/New-Chat'
 import Camera from './components/Camera-view/Camera-view'							
+import ChatWith from './components/Chat-view/Chat-With'							
 
 export default class App extends Component {
 
@@ -34,6 +36,8 @@ export default class App extends Component {
 						<Route path='/Camera' component={Camera}/>
 						<Route path='/Search' component={Search}/>
 						<Route path='/Chat' component={Chat}/>
+						<Route path='/New-Chat' component={NewChat}/>
+						<Route path='/Chat-With/:id' component={ChatWith}/>
 					</View>
 				</NativeRouter>
 			</Provider>

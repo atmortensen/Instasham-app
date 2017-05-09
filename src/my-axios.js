@@ -6,7 +6,7 @@ const myAxios = function(token){
 		auth = {'Authorization': token}
 	}
 	return axios.create({
-	  baseURL: 'http://192.168.1.4:3000',
+	  baseURL: 'http://192.168.1.128:3000',
 	  // baseURL: 'https://instasham-server.herokuapp.com',
 	  headers: auth
 	})
