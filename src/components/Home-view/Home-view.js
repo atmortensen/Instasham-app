@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import {connect} from 'react-redux'
 import Nav from '../Nav'
-import axios from 'axios'
+import myAxios from '../../my-axios'
 
 const viewWidth = Dimensions.get('window').width
 
@@ -24,21 +24,15 @@ class Home extends Component{
 	}
 
 	loadImages(){
-		axios({
-			method: 'get',
-			url: 'https://guarded-inlet-23236.herokuapp.com/getUrls',
-			headers: {'Authorization': this.props.token}
-		}).then(response => {
+		myAxios(this.props.token).get('/getUrls')
+		.then(response => {
 			this.setState({urls: response.data.reverse()})
 		})
 	}
 
 	deleteImage(url){
-		axios({
-			method: 'delete',
-			url: 'https://guarded-inlet-23236.herokuapp.com/removeUrl/?url=' + url,
-			headers: {'Authorization': this.props.token}
-		}).then(() => {
+		myAxios(this.props.token).delete('/removeUrl/?url=' + url)
+		.then(() => {
 			this.loadImages()
 		})
 	}

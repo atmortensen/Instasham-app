@@ -5,6 +5,7 @@ import Nav from '../Nav'
 import ImagePicker from 'react-native-image-crop-picker'
 import { Buffer } from 'buffer'
 import axios from 'axios'
+import myAxios from '../../my-axios'
 
 class Camera extends Component{
 	constructor(){
@@ -20,11 +21,8 @@ class Camera extends Component{
 		this.setState({loading: 'LOADING'})
 		const buf = new Buffer(image.data, 'base64')
 		const fileName = this.props.profile.id + '_' + Date.now() + '.jpeg'
-		axios({
-			method: 'get',
-      url: 'http://guarded-inlet-23236.herokuapp.com/sign-s3?file-name=' + fileName,
-      headers: {'Authorization': this.props.token}
-		}).then((response) => {
+		myAxios(this.props.token).get('/sign-s3?file-name=' + fileName)
+		.then((response) => {
       axios({
         method: 'put',
         url: response.data.signedURL,
@@ -32,12 +30,8 @@ class Camera extends Component{
         headers: {'Content-Type': 'image/jpeg'}
       }).then(() => {
         let url = 'https://s3-us-west-2.amazonaws.com/practice-s3-alex/' + fileName
-      	axios({
-      		method: 'post',
-      		url: 'http://guarded-inlet-23236.herokuapp.com/saveUrl',
-      		data: {url},
-      		headers: {'Authorization': this.props.token}
-      	}).then(()=>{
+      	myAxios(this.props.token).post('/saveUrl', {url})
+      	.then(()=>{
       		this.setState({loading: ''})
       		this.props.history.push('/Home')
       	})

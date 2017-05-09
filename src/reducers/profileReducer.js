@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {LoginManager, AccessToken} from 'react-native-fbsdk'
 import {Alert, AsyncStorage} from 'react-native'
+import myAxios from '../my-axios'
 
 const SETPROFILE = 'login/SETPROFILE'
 const SETTOKEN = 'login/SETTOKEN'
@@ -47,9 +48,11 @@ export function login(){
 					AsyncStorage.setItem('token', response.accessToken)
 					axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${response.accessToken}`)
 					.then(response => {
-						dispatch({
-							type: SETPROFILE,
-							profile: response.data
+						myAxios().post('/login', response.data).then((response) => {
+							dispatch({
+								type: SETPROFILE,
+								profile: response.data
+							})
 						})
 					})
 				})
@@ -78,11 +81,13 @@ export function checkToken(){
 				// Use token to get facebook profile
 				axios.get(`https://graph.facebook.com/me?fields=id,name,picture&access_token=${token}`)
 				.then(response => {
-					dispatch({
-						type: SETPROFILE,
-						profile: response.data
+					myAxios().post('/login', response.data).then((response) => {
+						dispatch({
+							type: SETPROFILE,
+							profile: response.data
+						})
 					})
-				})
+				}).catch(()=>dispatch({type: DONE_LOADING}))
 			}	else {
 				dispatch({type: DONE_LOADING})
 			}
